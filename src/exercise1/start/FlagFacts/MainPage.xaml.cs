@@ -31,26 +31,20 @@ namespace FlagFacts
 
         private void InitializeData()
         {
-            country.ItemsSource = (IList) repository.Countries;
-            country.SelectedItem = CurrentFlag.Country;
-            country.SelectedIndexChanged += (s, e) => CurrentFlag.Country = repository.Countries[country.SelectedIndex];
+            country.ItemsSource = (IList)repository.Countries;
 
             flagImage.Source = CurrentFlag.GetImageSource();
 
-            adopted.Date = CurrentFlag.DateAdopted;
-            adopted.DateSelected += (s, e) => CurrentFlag.DateAdopted = e.NewDate;
-
-            hasShield.IsToggled = CurrentFlag.IncludesShield;
-            hasShield.Toggled += (s, e) => CurrentFlag.IncludesShield = hasShield.IsToggled;
-
-            description.Text = CurrentFlag.Description;
+            this.BindingContext = CurrentFlag;
         }
 
         private async void OnShow(object sender, EventArgs e)
         {
-            await DisplayAlert(CurrentFlag.Country,
-                $"{CurrentFlag.DateAdopted:D} - {CurrentFlag.IncludesShield}: {CurrentFlag.MoreInformationUrl}", 
-                "OK");
+          CurrentFlag.DateAdopted = CurrentFlag.DateAdopted.AddYears(1);
+
+           await DisplayAlert(CurrentFlag.Country,
+            $"{CurrentFlag.DateAdopted:D} - {CurrentFlag.IncludesShield}: {CurrentFlag.MoreInformationUrl}",
+             "OK");
         }
 
         private void OnMoreInformation(object sender, EventArgs e)
